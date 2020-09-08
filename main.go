@@ -64,9 +64,9 @@ func rewriteFunc(n ast.Node) (ast.Node, bool) {
 										for _, elt := range lst.Elts {
 											elts := elt.(*ast.CompositeLit).Elts
 											if elts[1].(*ast.Ident).Name == "true" {
-												src := decodeString(elts[0].(*ast.BasicLit).Value)
+												src := unquoteString(elts[0].(*ast.BasicLit).Value)
 												re := restore(src)
-												except := decodeString(elts[2].(*ast.BasicLit).Value)
+												except := unquoteString(elts[2].(*ast.BasicLit).Value)
 												if re != except && strings.Contains(re, "_UTF8MB4") && !strings.Contains(strings.ToLower(except), "_utf8mb4") {
 													elts[2].(*ast.BasicLit).Value = strconv.Quote(re)
 												}
@@ -84,7 +84,7 @@ func rewriteFunc(n ast.Node) (ast.Node, bool) {
 	return n, true
 }
 
-func decodeString(s string) string {
+func unquoteString(s string) string {
 	unquote, err := strconv.Unquote(s)
 	if err != nil {
 		panic(err)
