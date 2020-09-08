@@ -66,8 +66,8 @@ func rewriteFunc(n ast.Node) (ast.Node, bool) {
 											if elts[1].(*ast.Ident).Name == "true" {
 												src := unquoteString(elts[0].(*ast.BasicLit).Value)
 												re := restore(src)
-												except := unquoteString(elts[2].(*ast.BasicLit).Value)
-												if re != except && strings.Contains(re, "_UTF8MB4") && !strings.Contains(strings.ToLower(except), "_utf8mb4") {
+												expected := unquoteString(elts[2].(*ast.BasicLit).Value)
+												if re != expected && strings.Contains(re, "_UTF8MB4") && !strings.Contains(strings.ToLower(expected), "_utf8mb4") {
 													elts[2].(*ast.BasicLit).Value = strconv.Quote(re)
 												}
 											}
